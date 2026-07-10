@@ -1932,7 +1932,7 @@ input[readonly] { background: #eef3f6; color: var(--muted); cursor: not-allowed;
   .nav-cta { 
     grid-column: 1 / -1;
     grid-row: 2;
-    width: 100%;
+    justify-self: center;
     margin-top: 8px;
   }
 }
