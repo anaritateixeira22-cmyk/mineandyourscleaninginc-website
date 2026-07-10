@@ -73,12 +73,6 @@ document.addEventListener("DOMContentLoaded", function () {
     closeNav();
   });
 
-  // Scrolling the underlying page closes the menu too, rather than
-  // requiring a manual tap on the hamburger first.
-  window.addEventListener("scroll", function () {
-    if (nav.classList.contains("is-open")) closeNav();
-  }, { passive: true });
-
   // ==================================================
   // NAV DROPDOWNS
   // Desktop: pure CSS (:hover / :focus-within) — no JS needed there.
