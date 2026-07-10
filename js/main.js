@@ -4,14 +4,6 @@
 // ==================================================
 
 document.addEventListener("DOMContentLoaded", function () {
-  // TEMPORARY DIAGNOSTIC — remove once we've confirmed the live site is
-  // loading the current JS. Shows a small tag in the corner of every
-  // page so it's obvious at a glance whether this build is active.
-  var debugTag = document.createElement("div");
-  debugTag.textContent = "JS build 20260710b";
-  debugTag.style.cssText = "position:fixed;bottom:6px;left:6px;background:#000;color:#7CFC00;font-size:11px;font-family:monospace;padding:3px 8px;z-index:999999;border-radius:5px;opacity:0.9;pointer-events:none;";
-  document.body.appendChild(debugTag);
-
   var nav = document.querySelector(".main-nav");
   var toggle = document.querySelector(".nav-toggle");
 
