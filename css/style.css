@@ -2001,7 +2001,13 @@ input[readonly] { background: #eef3f6; color: var(--muted); cursor: not-allowed;
     color: var(--navy);
   }
 
-  .nav-toggle { display: inline-flex; grid-column: 3; }
+  .nav-toggle { 
+    display: inline-flex; 
+    grid-column: 3;
+    position: relative;
+    z-index: 1001;
+    pointer-events: auto;
+  }
 
   .nav-links {
     order: 4;
