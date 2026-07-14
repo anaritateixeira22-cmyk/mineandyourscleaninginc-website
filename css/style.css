@@ -866,6 +866,15 @@ a { color: inherit; text-decoration: none; }
   color: var(--navy);
 }
 
+.hero-support-copy {
+  padding: 16px 0 6px;
+}
+
+.hero-support-copy p {
+  margin: 0;
+  text-align: center;
+}
+
 /* ==================================================
    HERO — Inner pages
 ================================================== */
