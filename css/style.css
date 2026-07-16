@@ -1364,6 +1364,50 @@ blockquote span { display: block; margin-top: 16px; color: var(--teal); font-siz
   gap: 24px;
 }
 
+.quote-cta-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.quote-content .quote-cta-note {
+  margin: 0;
+  font-family: "Open Sans", Arial, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: rgba(255,255,255,0.56);
+  text-align: center;
+  line-height: 1.35;
+}
+
+.quote-content .quote-cta-note.compact {
+  font-size: 0.72rem;
+}
+
+.cta-note-light {
+  margin: 0;
+  font-family: "Open Sans", Arial, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--muted);
+  letter-spacing: 0.01em;
+  text-align: center;
+  line-height: 1.35;
+}
+
+.contact-followup-cta {
+  margin-top: 4px;
+  gap: 0;
+}
+
+.contact-followup-cta .cta-note-light {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
 .quote-banner-photo {
   position: relative;
   min-height: 400px;
@@ -2181,6 +2225,7 @@ input[readonly] { background: #eef3f6; color: var(--muted); cursor: not-allowed;
   .application-form fieldset { padding: 16px; }
   .submit-btn { width: 100%; min-width: 0; }
   .quote-content { flex-direction: column; text-align: center; }
+  .quote-cta-wrap { margin-top: 2px; }
   .top-bar-inner { flex-direction: column; gap: 6px; text-align: center; }
   .top-bar a.top-bar-location { display: none; }
   .top-bar-contact { 
@@ -2411,13 +2456,25 @@ input[readonly] { background: #eef3f6; color: var(--muted); cursor: not-allowed;
 
 .communication-note {
   padding-top: 0;
-  margin: top 0;
+  margin: 0;
 }
 
 .communication-note .container {
-  border-left: 3px solid var(--muted);
-  border-radius: 12px;
-  padding-left: 0.85rem;
+  max-width: 92%;
+  margin: 0 auto;
+}
+
+.communication-inner {
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0,41,66,0.05);
+  padding: 20px 24px;
+}
+
+.communication-item {
+  padding-left: 16px;
+  border-left: 3px solid var(--divider);
 }
 
 .communication-note p {
@@ -2431,6 +2488,92 @@ input[readonly] { background: #eef3f6; color: var(--muted); cursor: not-allowed;
   margin-top: 10px;
 }
 
+.contact-intro-block {
+  max-width: none;
+  margin: 6px 0 70px;
+  text-align: left;
+}
+
+.contact-intro-kicker {
+  margin-bottom: 8px;
+  color: var(--muted);
+}
+
+.contact-intro-prelude {
+  margin: 0;
+  color: var(--text);
+}
+
+.contact-inline-highlight {
+  color: var(--muted);
+}
+
+.contact-guidance-copy strong {
+  color: inherit;
+}
+
+.contact-guidance-copy {
+  color: var(--muted);
+}
+
+.contact-process-note {
+  margin: 5rem auto 0;
+}
+
+.contact-process-note .btn.secondary {
+  margin-top: 8px;
+}
+
+.contact-next-step-section {
+  padding-top: 24px;
+}
+
+.process-expectation-card {
+  margin-bottom: 110px;
+}
+
+.process-expectation-content h3 {
+  color: var(--navy);
+  margin: 4px 0 10px;
+}
+
+.process-expectation-content p {
+  color: var(--muted);
+  margin: 0 0 14px;
+}
+
+.process-expectation-content .process-expectation-lead {
+  font-family: "Montserrat", Arial, sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  margin: 0 0 6px;
+}
+
+.process-expectation-content .process-expectation-support {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  margin: 0 0 16px;
+}
+
+.process-expectation-content p:last-child {
+  margin-bottom: 0;
+}
+
+#site-assessment .photo-inline,
+#service-delivery .photo-inline {
+  margin: 28px auto;
+}
+
+#plans .services-layout,
+#quality-assurance .services-layout {
+  gap: 36px;
+}
+
+#plans .services-layout {
+  margin-top: 0;
+}
+
 /* ==================================================
    Mobile
    ================================================== */
@@ -2442,9 +2585,11 @@ input[readonly] { background: #eef3f6; color: var(--muted); cursor: not-allowed;
   }
 
   .communication-note .container {
-    border-radius: 0;
-    border-left-width: 2px;
-    padding-left: 0.75rem;
+    max-width: 100%;
+  }
+
+  .communication-inner {
+    padding: 16px;
   }
 
   .communication-note p {
