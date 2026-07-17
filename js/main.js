@@ -249,10 +249,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // ==================================================
 // FAQ SEARCH
-// Live-filters the question list as the user types. Matching
-// items stay in the DOM and are simply shown/hidden — nothing
-// is removed, so search engines and answer-engine crawlers can
-// always read the full, unfiltered content.
+// Live-filters the question list as the user types, matching on
+// individual keywords rather than one exact phrase — searching
+// "WSIB documentation" finds items containing both words anywhere,
+// in any order, not just that exact phrase back to back. Matching
+// items stay in the DOM and are simply shown/hidden — nothing is
+// removed, so search engines and answer-engine crawlers can always
+// read the full, unfiltered content.
 // ==================================================
 document.addEventListener("DOMContentLoaded", function () {
   var searchInput = document.getElementById("faq-search");
@@ -276,28 +279,61 @@ document.addEventListener("DOMContentLoaded", function () {
     entry.textEl.textContent = entry.originalText;
   }
 
-  function highlight(entry, query) {
+  // Highlights every occurrence of every search word within the
+  // question text, merging overlapping matches so nested/overlapping
+  // words don't produce broken markup.
+  function highlightWords(entry, words) {
     var text = entry.originalText;
-    var idx = text.toLowerCase().indexOf(query);
-    if (idx === -1) {
+    var lower = text.toLowerCase();
+    var ranges = [];
+
+    words.forEach(function (w) {
+      if (!w) return;
+      var idx = 0;
+      var found;
+      while ((found = lower.indexOf(w, idx)) !== -1) {
+        ranges.push([found, found + w.length]);
+        idx = found + w.length;
+      }
+    });
+
+    if (!ranges.length) {
       clearHighlight(entry);
       return;
     }
-    var before = text.slice(0, idx);
-    var match = text.slice(idx, idx + query.length);
-    var after = text.slice(idx + query.length);
+
+    ranges.sort(function (a, b) { return a[0] - b[0]; });
+    var merged = [ranges[0]];
+    for (var i = 1; i < ranges.length; i++) {
+      var last = merged[merged.length - 1];
+      if (ranges[i][0] <= last[1]) {
+        last[1] = Math.max(last[1], ranges[i][1]);
+      } else {
+        merged.push(ranges[i]);
+      }
+    }
+
     entry.textEl.textContent = "";
-    entry.textEl.appendChild(document.createTextNode(before));
-    var markEl = document.createElement("mark");
-    markEl.textContent = match;
-    entry.textEl.appendChild(markEl);
-    entry.textEl.appendChild(document.createTextNode(after));
+    var cursor = 0;
+    merged.forEach(function (range) {
+      if (range[0] > cursor) {
+        entry.textEl.appendChild(document.createTextNode(text.slice(cursor, range[0])));
+      }
+      var markEl = document.createElement("mark");
+      markEl.textContent = text.slice(range[0], range[1]);
+      entry.textEl.appendChild(markEl);
+      cursor = range[1];
+    });
+    if (cursor < text.length) {
+      entry.textEl.appendChild(document.createTextNode(text.slice(cursor)));
+    }
   }
 
   function runSearch() {
     var query = searchInput.value.trim().toLowerCase();
+    var words = query.split(/\s+/).filter(Boolean);
 
-    if (!query) {
+    if (!words.length) {
       itemData.forEach(function (entry) {
         entry.el.classList.remove("faq-hidden");
         entry.el.open = false;
@@ -309,15 +345,25 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     var anyVisible = false;
-    var firstMatch = null;
+    var bestMatch = null;
 
     itemData.forEach(function (entry) {
-      var matches = entry.searchText.indexOf(query) !== -1;
-      entry.el.classList.toggle("faq-hidden", !matches);
-      if (matches) {
+      var matchesAll = words.every(function (w) { return entry.searchText.indexOf(w) !== -1; });
+      entry.el.classList.toggle("faq-hidden", !matchesAll);
+
+      if (matchesAll) {
         anyVisible = true;
-        if (!firstMatch) firstMatch = entry;
-        highlight(entry, query);
+        highlightWords(entry, words);
+
+        // Prefer auto-expanding a match whose question text itself
+        // contains the keywords, over one that only matches in the
+        // answer body — that's almost always the more relevant result.
+        var inQuestion = words.every(function (w) {
+          return entry.originalText.toLowerCase().indexOf(w) !== -1;
+        });
+        if (!bestMatch || (inQuestion && !bestMatch.inQuestion)) {
+          bestMatch = { entry: entry, inQuestion: inQuestion };
+        }
       } else {
         clearHighlight(entry);
       }
@@ -332,7 +378,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     itemData.forEach(function (entry) {
       if (!entry.el.classList.contains("faq-hidden")) {
-        entry.el.open = (entry === firstMatch);
+        entry.el.open = bestMatch ? (entry === bestMatch.entry) : false;
       }
     });
   }
