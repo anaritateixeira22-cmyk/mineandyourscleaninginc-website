@@ -339,3 +339,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
   searchInput.addEventListener("input", runSearch);
 });
+
+// ==================================================
+// FAQ RELATED QUESTIONS — JUMP LINKS
+// Clicking a "Related Questions" link opens the target
+// question (if collapsed), scrolls to it, and briefly
+// highlights it so the jump is easy to follow.
+// ==================================================
+document.addEventListener("DOMContentLoaded", function () {
+  var jumpLinks = document.querySelectorAll(".faq-related-link[data-faq-jump]");
+  if (!jumpLinks.length) return;
+
+  jumpLinks.forEach(function (link) {
+    link.addEventListener("click", function (event) {
+      var targetId = link.getAttribute("data-faq-jump");
+      var target = document.getElementById(targetId);
+      if (!target) return;
+
+      event.preventDefault();
+      target.open = true;
+      target.classList.remove("faq-jump-highlight");
+      // force reflow so the animation can restart if clicked again
+      void target.offsetWidth;
+      target.classList.add("faq-jump-highlight");
+
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+
+      window.setTimeout(function () {
+        target.classList.remove("faq-jump-highlight");
+      }, 1500);
+    });
+  });
+});

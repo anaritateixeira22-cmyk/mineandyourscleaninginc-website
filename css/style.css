@@ -2888,6 +2888,55 @@ input[readonly] { background: #eef3f6; color: var(--muted); cursor: not-allowed;
 .faq-answer p:last-child { margin-bottom: 0; }
 .faq-answer ul.legal-list { margin: 0.6rem 0 0.95rem; }
 
+.faq-related {
+  margin-top: 1rem;
+  padding-top: 0.9rem;
+  border-top: 1px dashed var(--border);
+}
+
+.faq-related-label {
+  font-family: "Montserrat", Arial, sans-serif;
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 0.5rem;
+}
+
+.faq-related-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.faq-related-list li { margin: 0; }
+
+.faq-related-link {
+  font-size: 0.88rem;
+  color: var(--teal-dark);
+  text-decoration: underline;
+  text-decoration-color: rgba(1,77,105,0.3);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.18s ease;
+}
+
+.faq-related-link:hover {
+  text-decoration-color: var(--teal-dark);
+}
+
+.faq-item.faq-jump-highlight .faq-question {
+  animation: faq-jump-flash-anim 1.4s ease;
+}
+
+@keyframes faq-jump-flash-anim {
+  0%, 100% { background: transparent; }
+  25% { background: rgba(1,77,105,0.12); }
+}
+
 .faq-item .faq-answer {
   animation: faq-fade-in 0.2s ease;
 }
