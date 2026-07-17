@@ -246,3 +246,96 @@ document.addEventListener("DOMContentLoaded", function () {
 
   revealEls.forEach(function (el) { observer.observe(el); });
 });
+
+// ==================================================
+// FAQ SEARCH
+// Live-filters the question list as the user types. Matching
+// items stay in the DOM and are simply shown/hidden — nothing
+// is removed, so search engines and answer-engine crawlers can
+// always read the full, unfiltered content.
+// ==================================================
+document.addEventListener("DOMContentLoaded", function () {
+  var searchInput = document.getElementById("faq-search");
+  if (!searchInput) return;
+
+  var items = Array.prototype.slice.call(document.querySelectorAll("[data-faq-item]"));
+  var sections = Array.prototype.slice.call(document.querySelectorAll("[data-faq-section]"));
+  var noResults = document.getElementById("faq-no-results");
+
+  var itemData = items.map(function (item) {
+    var textEl = item.querySelector(".faq-question-text");
+    return {
+      el: item,
+      textEl: textEl,
+      originalText: textEl.textContent,
+      searchText: item.textContent.toLowerCase()
+    };
+  });
+
+  function clearHighlight(entry) {
+    entry.textEl.textContent = entry.originalText;
+  }
+
+  function highlight(entry, query) {
+    var text = entry.originalText;
+    var idx = text.toLowerCase().indexOf(query);
+    if (idx === -1) {
+      clearHighlight(entry);
+      return;
+    }
+    var before = text.slice(0, idx);
+    var match = text.slice(idx, idx + query.length);
+    var after = text.slice(idx + query.length);
+    entry.textEl.textContent = "";
+    entry.textEl.appendChild(document.createTextNode(before));
+    var markEl = document.createElement("mark");
+    markEl.textContent = match;
+    entry.textEl.appendChild(markEl);
+    entry.textEl.appendChild(document.createTextNode(after));
+  }
+
+  function runSearch() {
+    var query = searchInput.value.trim().toLowerCase();
+
+    if (!query) {
+      itemData.forEach(function (entry) {
+        entry.el.classList.remove("faq-hidden");
+        entry.el.open = false;
+        clearHighlight(entry);
+      });
+      sections.forEach(function (s) { s.classList.remove("faq-hidden"); });
+      noResults.hidden = true;
+      return;
+    }
+
+    var anyVisible = false;
+    var firstMatch = null;
+
+    itemData.forEach(function (entry) {
+      var matches = entry.searchText.indexOf(query) !== -1;
+      entry.el.classList.toggle("faq-hidden", !matches);
+      if (matches) {
+        anyVisible = true;
+        if (!firstMatch) firstMatch = entry;
+        highlight(entry, query);
+      } else {
+        clearHighlight(entry);
+      }
+    });
+
+    sections.forEach(function (section) {
+      var visibleInSection = section.querySelectorAll("[data-faq-item]:not(.faq-hidden)").length > 0;
+      section.classList.toggle("faq-hidden", !visibleInSection);
+    });
+
+    noResults.hidden = anyVisible;
+
+    itemData.forEach(function (entry) {
+      if (!entry.el.classList.contains("faq-hidden")) {
+        entry.el.open = (entry === firstMatch);
+      }
+    });
+  }
+
+  searchInput.addEventListener("input", runSearch);
+});
