@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var q = query.trim().toLowerCase();
 
     if (!q) {
-      results.innerHTML = '<p class="site-search-empty">Start typing to search services, industries, FAQs, and pages.</p>';
+      results.innerHTML = '<p class="site-search-empty">Type a keyword to see matching results grouped by category.</p>';
       return;
     }
 
@@ -74,7 +74,20 @@ document.addEventListener("DOMContentLoaded", function () {
     results.innerHTML = html;
   }
 
+  function closeMobileNav() {
+    var nav = document.querySelector(".main-nav");
+    var toggle = document.querySelector(".nav-toggle");
+    if (nav) nav.classList.remove("is-open");
+    if (toggle) toggle.setAttribute("aria-expanded", "false");
+    document.querySelectorAll(".nav-item.open").forEach(function (item) {
+      item.classList.remove("open");
+      var caret = item.querySelector(".nav-caret");
+      if (caret) caret.setAttribute("aria-expanded", "false");
+    });
+  }
+
   function openSearch() {
+    closeMobileNav();
     overlay.classList.add("is-open");
     document.body.style.overflow = "hidden";
     setTimeout(function () { input.focus(); }, 30);

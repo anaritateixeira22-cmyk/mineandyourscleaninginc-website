@@ -3138,9 +3138,9 @@ input[readonly] { background: #eef3f6; color: var(--muted); cursor: not-allowed;
   position: fixed;
   inset: 0;
   background: rgba(0,20,32,0.55);
-  z-index: 999;
+  z-index: 2000;
   display: none;
-  padding: 8vh 16px;
+  padding: 140px 16px 40px;
   overflow-y: auto;
 }
 .site-search-overlay.is-open { display: block; }
@@ -3201,6 +3201,6 @@ input[readonly] { background: #eef3f6; color: var(--muted); cursor: not-allowed;
   padding: 10px 8px;
 }
 @media (max-width: 600px) {
-  .site-search-overlay { padding: 6vh 10px; }
+  .site-search-overlay { padding: 110px 10px 30px; }
   .site-search-panel { padding: 16px; }
 }
