@@ -4,7 +4,7 @@
 // FAQs, and pages using the index in js/search-data.js
 // ==================================================
 
-document.addEventListener("DOMContentLoaded", function () {
+function initSiteSearch() {
   var data = window.SITE_SEARCH_DATA;
   var overlay = document.getElementById("site-search-overlay");
   var input = document.getElementById("site-search-input");
@@ -186,4 +186,18 @@ document.addEventListener("DOMContentLoaded", function () {
   input.addEventListener("input", function () {
     render(input.value);
   });
-});
+
+  // Expose so a lazy-loader (search-init.js) can trigger the panel to
+  // open immediately once this script finishes loading on demand.
+  window.__openSiteSearch = openSearch;
+  if (window.__siteSearchAutoOpen) {
+    window.__siteSearchAutoOpen = false;
+    openSearch();
+  }
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initSiteSearch);
+} else {
+  initSiteSearch();
+}

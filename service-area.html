@@ -441,6 +441,7 @@
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
+  if (typeof L !== "undefined" && document.getElementById("service-map")) {
     var map = L.map('service-map').setView([42.9800, -82.1500], 9);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -497,9 +498,9 @@
         .addTo(map)
         .bindPopup('<strong>' + c.name + '</strong>');
     });
+  }
   </script>
-    <script defer src="js/search-data.js?v=20260724a"></script>
-  <script defer src="js/site-search.js?v=20260718a"></script>
+  <script defer src="js/search-init.js?v=20260726a"></script>
   <script defer src="js/search-landing.js?v=20260718a"></script>
   <script defer src="js/main.js?v=20260714a"></script>
 </body>

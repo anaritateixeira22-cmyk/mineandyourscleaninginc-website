@@ -323,7 +323,6 @@
         <img src="images/photos/spray-bottle.webp" alt="Professional cleaning products prepared for service" class="hero-slide" loading="lazy" width="1300" height="731">
         <img src="images/photos/home-finished-d3.webp" alt="Finished clean room with neat and polished surfaces" class="hero-slide" loading="lazy" width="1300" height="731">
         <img src="images/photos/lady-with-supplies.webp" alt="Cleaning team member carrying professional supplies" class="hero-slide" loading="lazy" width="1300" height="731">
-        <img src="images/photos/process-assessment-g3.webp" alt="On-site facility walkthrough during a cleaning assessment" class="hero-slide" loading="lazy" width="1300" height="731">
       </div>
     </div>
 
@@ -693,6 +692,7 @@ reference letters...</p>
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
+  if (typeof L !== "undefined" && document.getElementById("index-map")) {
     var indexMap = L.map('index-map', { zoomControl: false, dragging: false, scrollWheelZoom: false }).setView([42.9800, -82.1500], 9);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -749,9 +749,9 @@ reference letters...</p>
         .addTo(indexMap)
         .bindPopup('<strong>' + c.name + '</strong>');
     });
+  }
   </script>
-    <script defer src="js/search-data.js?v=20260724a"></script>
-  <script defer src="js/site-search.js?v=20260718a"></script>
+  <script defer src="js/search-init.js?v=20260726a"></script>
   <script defer src="js/search-landing.js?v=20260718a"></script>
   <script defer src="js/main.js?v=20260714a"></script>
 </body>

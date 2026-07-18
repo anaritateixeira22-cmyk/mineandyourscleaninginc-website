@@ -224,8 +224,6 @@
       <div class="hero-slideshow" data-slideshow>
         <div class="hero-slide-track">
           <img src="images/photos/hands-on.webp" alt="Hands-on cleaning with proper supplies" class="hero-slide is-active" loading="eager" width="1300" height="731">
-          <img src="images/photos/services-floor-a2.webp" alt="Detailed floor cleaning in a commercial interior" class="hero-slide" loading="lazy" width="1300" height="731">
-          <img src="images/photos/services-glass-e1.webp" alt="Glass and surface cleaning in a professional setting" class="hero-slide" loading="lazy" width="1300" height="731">
           <img src="images/photos/services-washroom-b1.webp" alt="Sanitized washroom maintained to professional standards" class="hero-slide" loading="lazy" width="1300" height="731">
           <img src="images/photos/services-cart-e4.webp" alt="Service cart organized with tools and cleaning products" class="hero-slide" loading="lazy" width="1300" height="731">
         </div>
@@ -250,7 +248,7 @@
       </div>
       <div class="card-grid three">
       <div class="card service-hub-card">
-        <img src="images/icons/commercial-properties.webp" alt="" class="service-hub-icon" width="46" height="46">
+        <img src="images/icons/commercial-properties.webp" alt="" class="service-hub-icon" width="46" height="46" loading="lazy">
         <h3>Commercial Cleaning</h3>
         <p class="service-hub-summary">Recurring cleaning programs for offices, public facilities, and organizations, scoped to how your building is actually used.</p>
         <ul class="service-hub-examples">
@@ -262,7 +260,7 @@
         <a href="commercial-cleaning.html" class="btn secondary">View Commercial Cleaning</a>
       </div>
       <div class="card service-hub-card">
-        <img src="images/icons/routine-maintenance-cleaning.webp" alt="" class="service-hub-icon" width="46" height="46">
+        <img src="images/icons/routine-maintenance-cleaning.webp" alt="" class="service-hub-icon" width="46" height="46" loading="lazy">
         <h3>Janitorial Services</h3>
         <p class="service-hub-summary">Ongoing, scheduled maintenance visits that keep floors, washrooms, and common areas consistently maintained.</p>
         <ul class="service-hub-examples">
@@ -274,7 +272,7 @@
         <a href="janitorial-services.html" class="btn secondary">View Janitorial Services</a>
       </div>
       <div class="card service-hub-card">
-        <img src="images/icons/specialized-cleaning-programs.webp" alt="" class="service-hub-icon" width="46" height="46">
+        <img src="images/icons/specialized-cleaning-programs.webp" alt="" class="service-hub-icon" width="46" height="46" loading="lazy">
         <h3>Office Cleaning</h3>
         <p class="service-hub-summary">Office cleaning scaled to headcount and traffic, from small independent offices to larger administrative buildings.</p>
         <ul class="service-hub-examples">
@@ -286,7 +284,7 @@
         <a href="office-cleaning.html" class="btn secondary">View Office Cleaning</a>
       </div>
       <div class="card service-hub-card">
-        <img src="images/icons/public-sector-facilities.webp" alt="" class="service-hub-icon" width="46" height="46">
+        <img src="images/icons/public-sector-facilities.webp" alt="" class="service-hub-icon" width="46" height="46" loading="lazy">
         <h3>Public Facility Cleaning</h3>
         <p class="service-hub-summary">Cleaning support for municipal and community-serving buildings that see continuous public and staff traffic.</p>
         <ul class="service-hub-examples">
@@ -297,7 +295,7 @@
         <a href="public-facility-cleaning.html" class="btn secondary">View Public Facility Cleaning</a>
       </div>
       <div class="card service-hub-card">
-        <img src="images/icons/move-in-move-outs-cleaning.webp" alt="" class="service-hub-icon" width="46" height="46">
+        <img src="images/icons/move-in-move-outs-cleaning.webp" alt="" class="service-hub-icon" width="46" height="46" loading="lazy">
         <h3>Property Management Cleaning</h3>
         <p class="service-hub-summary">Common-area maintenance, unit turnovers, and real estate turnovers for property managers and multi-site organizations.</p>
         <ul class="service-hub-examples">
@@ -309,7 +307,7 @@
         <a href="property-management-cleaning.html" class="btn secondary">View Property Management Cleaning</a>
       </div>
       <div class="card service-hub-card">
-        <img src="images/icons/deep-cleaning.webp" alt="" class="service-hub-icon" width="46" height="46">
+        <img src="images/icons/deep-cleaning.webp" alt="" class="service-hub-icon" width="46" height="46" loading="lazy">
         <h3>Deep Cleaning</h3>
         <p class="service-hub-summary">A more thorough, periodic service that resets a space before or between recurring cleaning visits.</p>
         <ul class="service-hub-examples">
@@ -320,7 +318,7 @@
         <a href="deep-cleaning.html" class="btn secondary">View Deep Cleaning</a>
       </div>
       <div class="card service-hub-card">
-        <img src="images/icons/post-construction-with-broom.webp" alt="" class="service-hub-icon" width="46" height="46">
+        <img src="images/icons/post-construction-with-broom.webp" alt="" class="service-hub-icon" width="46" height="46" loading="lazy">
         <h3>Post-Construction Cleaning</h3>
         <p class="service-hub-summary">One-time cleanup that prepares a renovated or newly built space for occupancy.</p>
         <ul class="service-hub-examples">
@@ -331,7 +329,7 @@
         <a href="post-construction-cleaning.html" class="btn secondary">View Post-Construction Cleaning</a>
       </div>
       <div class="card service-hub-card">
-        <img src="images/icons/residential-cleaning.webp" alt="" class="service-hub-icon" width="46" height="46">
+        <img src="images/icons/residential-cleaning.webp" alt="" class="service-hub-icon" width="46" height="46" loading="lazy">
         <h3>Selected Residential Cleaning</h3>
         <p class="service-hub-summary">Reliable cleaning support for select private homes, offered alongside our primary commercial focus.</p>
         <ul class="service-hub-examples">
@@ -634,6 +632,7 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
+  if (typeof L !== "undefined" && document.getElementById("services-map")) {
     var smap = L.map('services-map', { zoomControl: false, dragging: false, scrollWheelZoom: false }).setView([42.9800, -82.1500], 9);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -687,9 +686,9 @@
         .addTo(smap)
         .bindPopup('<strong>' + c.name + '</strong>');
     });
+  }
   </script>
-    <script defer src="js/search-data.js?v=20260724a"></script>
-  <script defer src="js/site-search.js?v=20260718a"></script>
+  <script defer src="js/search-init.js?v=20260726a"></script>
   <script defer src="js/search-landing.js?v=20260718a"></script>
   <script defer src="js/main.js?v=20260714a"></script>
 </body>
