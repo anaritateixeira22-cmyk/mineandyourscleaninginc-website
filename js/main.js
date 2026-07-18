@@ -3,15 +3,6 @@
 // Site-wide JS — mobile navigation toggle
 // ==================================================
 
-(function enforcePrimaryDomain() {
-  var host = window.location.hostname.toLowerCase();
-  var sourceHosts = ["mineandyourscleaning.com", "www.mineandyourscleaning.com"];
-  if (sourceHosts.indexOf(host) === -1) return;
-
-  var target = "https://mineandyourscleaning.ca" + window.location.pathname + window.location.search + window.location.hash;
-  window.location.replace(target);
-})();
-
 document.addEventListener("DOMContentLoaded", function () {
   var nav = document.querySelector(".main-nav");
   var toggle = document.querySelector(".nav-toggle");
