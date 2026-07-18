@@ -494,9 +494,11 @@
     ];
 
     communities.forEach(function(c) {
-      L.marker([c.lat, c.lng], { icon: c.main ? mainIcon : dotIcon })
+      var areaMarker = L.marker([c.lat, c.lng], { icon: c.main ? mainIcon : dotIcon, alt: c.name })
         .addTo(map)
         .bindPopup('<strong>' + c.name + '</strong>');
+      var areaMarkerEl = areaMarker.getElement();
+      if (areaMarkerEl) areaMarkerEl.setAttribute('aria-label', c.name);
     });
   }
   </script>

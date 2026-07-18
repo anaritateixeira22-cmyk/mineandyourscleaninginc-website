@@ -682,9 +682,11 @@
       { name: 'Oil Springs',    lat: 42.7833, lng: -82.1167 },
       { name: 'Lambton Shores', lat: 43.1833, lng: -81.9000 },
     ].forEach(function(c) {
-      L.marker([c.lat, c.lng], { icon: c.main ? sMain : sDot })
+      var sMarker = L.marker([c.lat, c.lng], { icon: c.main ? sMain : sDot, alt: c.name })
         .addTo(smap)
         .bindPopup('<strong>' + c.name + '</strong>');
+      var sMarkerEl = sMarker.getElement();
+      if (sMarkerEl) sMarkerEl.setAttribute('aria-label', c.name);
     });
   }
   </script>

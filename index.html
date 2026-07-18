@@ -745,9 +745,11 @@ reference letters...</p>
     ];
 
     indexCommunities.forEach(function(c) {
-      L.marker([c.lat, c.lng], { icon: c.main ? indexMain : indexDot })
+      var indexMarker = L.marker([c.lat, c.lng], { icon: c.main ? indexMain : indexDot, alt: c.name })
         .addTo(indexMap)
         .bindPopup('<strong>' + c.name + '</strong>');
+      var indexMarkerEl = indexMarker.getElement();
+      if (indexMarkerEl) indexMarkerEl.setAttribute('aria-label', c.name);
     });
   }
   </script>
