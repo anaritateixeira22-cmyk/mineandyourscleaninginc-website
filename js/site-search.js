@@ -1,6 +1,6 @@
 // ==================================================
 // MINE AND YOURS CLEANING INC.
-// Site-wide search — searches services, industries,
+// Site-wide search: searches services, industries,
 // FAQs, and pages using the index in js/search-data.js
 // ==================================================
 
@@ -21,6 +21,51 @@ document.addEventListener("DOMContentLoaded", function () {
     { key: "pages", label: "Pages" }
   ];
 
+  // Small stopword list so natural-language questions ("how often should
+  // our office be cleaned") only require the meaningful words to match,
+  // not every word in the sentence.
+  var STOPWORDS = {
+    "a":1,"an":1,"the":1,"is":1,"are":1,"do":1,"does":1,"did":1,"can":1,
+    "could":1,"should":1,"would":1,"will":1,"i":1,"my":1,"our":1,"your":1,
+    "you":1,"we":1,"us":1,"to":1,"for":1,"of":1,"in":1,"on":1,"at":1,
+    "and":1,"or":1,"it":1,"this":1,"that":1,"be":1,"have":1,"has":1,
+    "need":1,"needs":1,"want":1,"wants":1,"please":1,"how":1,"what":1,
+    "when":1,"where":1,"why":1,"who":1,"about":1,"with":1,"if":1
+  };
+
+  function tokenize(str) {
+    return String(str).toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+  }
+
+  // Lightweight fuzzy match so plurals, verb tenses, and near-forms of a
+  // word count as a hit (e.g. "price" / "pricing", "clean" / "cleaning" /
+  // "cleaners", "gym" / "gyms") without a full stemming library.
+  function wordsMatch(a, b) {
+    if (a === b) return true;
+    var shorter = a.length <= b.length ? a : b;
+    var longer = a.length <= b.length ? b : a;
+    if (shorter.length >= 3 && longer.indexOf(shorter) === 0) return true;
+    if (a.length >= 5 && b.length >= 5) {
+      var i = 0;
+      while (i < 4 && a[i] === b[i]) i++;
+      if (i >= 4) return true;
+    }
+    return false;
+  }
+
+  function buildHaystackWords(item) {
+    var text = [item.title, item.desc || "", item.keywords || ""].join(" ");
+    return tokenize(text);
+  }
+
+  // Cache tokenized haystacks once per item instead of re-splitting on
+  // every keystroke.
+  GROUPS.forEach(function (group) {
+    (data[group.key] || []).forEach(function (item) {
+      if (!item._words) item._words = buildHaystackWords(item);
+    });
+  });
+
   function escapeHtml(str) {
     return String(str)
       .replace(/&/g, "&amp;")
@@ -36,10 +81,19 @@ document.addEventListener("DOMContentLoaded", function () {
     return escaped.slice(0, idx) + "<mark>" + escaped.slice(idx, idx + query.length) + "</mark>" + escaped.slice(idx + query.length);
   }
 
-  function render(query) {
-    var q = query.trim().toLowerCase();
+  function itemMatches(item, queryTokens) {
+    var meaningful = queryTokens.filter(function (t) { return !STOPWORDS[t]; });
+    var tokens = meaningful.length ? meaningful : queryTokens;
+    return tokens.every(function (token) {
+      return item._words.some(function (word) { return wordsMatch(token, word); });
+    });
+  }
 
-    if (!q) {
+  function render(query) {
+    var q = query.trim();
+    var queryTokens = tokenize(q);
+
+    if (!q || !queryTokens.length) {
       results.innerHTML = '<p class="site-search-empty">Type a keyword to see matching results grouped by category.</p>';
       return;
     }
@@ -50,8 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
     GROUPS.forEach(function (group) {
       var items = data[group.key] || [];
       var matches = items.filter(function (item) {
-        var haystack = (item.title + " " + (item.desc || "")).toLowerCase();
-        return haystack.indexOf(q) !== -1;
+        return itemMatches(item, queryTokens);
       }).slice(0, 8);
 
       if (matches.length === 0) return;
