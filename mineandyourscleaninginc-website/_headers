@@ -1,0 +1,23 @@
+# Cache static assets aggressively. Filenames are cache-busted with a
+# ?v= query string in the HTML (e.g. style.min.css?v=20260718d), so it's
+# safe to let browsers/CDNs cache these for a long time: any future
+# update ships under a new ?v= value and is fetched fresh automatically.
+#
+# Note: this file is a Netlify/Cloudflare Pages convention. GitHub Pages
+# does not read _headers and does not support custom response headers,
+# so this has no effect there. If mineandyourscleaning.ca is served from
+# GitHub Pages, cache lifetimes need to be addressed by moving static
+# assets behind a CDN (e.g. Cloudflare in front of GitHub Pages) that can
+# apply these rules at the edge.
+
+/css/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/js/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/images/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.html
+  Cache-Control: public, max-age=3600, must-revalidate
