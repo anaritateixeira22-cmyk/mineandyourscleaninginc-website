@@ -12,12 +12,14 @@ document.addEventListener("DOMContentLoaded", function () {
   function closeNav() {
     nav.classList.remove("is-open");
     toggle.setAttribute("aria-expanded", "false");
+    toggle.setAttribute("aria-label", "Open menu");
     closeAllAccordionItems();
   }
 
   function toggleNav() {
     var isOpen = nav.classList.toggle("is-open");
     toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    toggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
   }
 
   toggle.addEventListener("click", toggleNav);
@@ -43,28 +45,45 @@ document.addEventListener("DOMContentLoaded", function () {
   // gesture people already expect from mobile menus/sheets.
   // ==================================================
   var touchStartY = null;
+  var touchStartX = null;
+  var justSwiped = false;
 
   nav.addEventListener("touchstart", function (event) {
     if (!nav.classList.contains("is-open")) return;
-    // Ignore gestures that start on an actual link/button — those are
-    // taps meant for that control (open a section, follow a link),
-    // not a deliberate swipe-to-dismiss. Real thumbs aren't perfectly
-    // still, so without this a normal tap could read as a small swipe
-    // and close the whole menu by accident.
-    if (event.target.closest("a, button")) {
-      touchStartY = null;
-      return;
-    }
     touchStartY = event.touches[0].clientY;
+    touchStartX = event.touches[0].clientX;
   }, { passive: true });
 
   nav.addEventListener("touchend", function (event) {
     if (touchStartY === null || !nav.classList.contains("is-open")) return;
     var touchEndY = event.changedTouches[0].clientY;
+    var touchEndX = event.changedTouches[0].clientX;
     var swipedUp = touchStartY - touchEndY;
-    if (swipedUp > 70) closeNav();
+    var horizontalDrift = Math.abs(touchEndX - touchStartX);
+    // A real swipe moves well past what a steady tap would; browsers
+    // already suppress the click event once a touch has moved this
+    // much, so this can't accidentally also trigger a link underneath.
+    if (swipedUp > 70 && horizontalDrift < 60) {
+      closeNav();
+      // On some devices a swipe that ends directly over a link or the
+      // CTA button can still produce a trailing click (browsers aren't
+      // fully consistent here). Swallow that one click so a swipe never
+      // accidentally also navigates the page.
+      justSwiped = true;
+      setTimeout(function () { justSwiped = false; }, 400);
+    }
     touchStartY = null;
+    touchStartX = null;
   }, { passive: true });
+
+  // Runs in the capture phase so it sees the click before any link's
+  // own navigation or the other listeners below.
+  nav.addEventListener("click", function (event) {
+    if (justSwiped) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  }, true);
 
   // Tapping anywhere outside the menu (the rest of the page) closes it.
   document.addEventListener("click", function (event) {
@@ -154,6 +173,15 @@ document.addEventListener("DOMContentLoaded", function () {
       wrapper.classList.add("is-open");
       trigger.setAttribute("aria-expanded", "true");
       panel.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    wrapper.querySelectorAll(".minimize-btn").forEach(function (button) {
+      button.addEventListener("click", function () {
+        panel.hidden = true;
+        wrapper.classList.remove("is-open");
+        trigger.setAttribute("aria-expanded", "false");
+        trigger.scrollIntoView({ behavior: "smooth", block: "center" });
+      });
     });
   });
 });
@@ -416,4 +444,79 @@ document.addEventListener("DOMContentLoaded", function () {
       }, 1500);
     });
   });
+});
+
+// ==================================================
+// COPY TO CLIPBOARD
+// Small "Copy" buttons next to phone/email contact
+// methods, for anyone who'd rather not be dropped into
+// their phone/email app.
+// ==================================================
+document.addEventListener("DOMContentLoaded", function () {
+  var copyButtons = document.querySelectorAll("[data-copy]");
+  if (!copyButtons.length) return;
+
+  copyButtons.forEach(function (btn) {
+    var defaultLabel = btn.querySelector(".btn-copy-label");
+    var originalText = defaultLabel ? defaultLabel.textContent : btn.textContent;
+
+    btn.addEventListener("click", function () {
+      var value = btn.getAttribute("data-copy");
+      var showCopied = function () {
+        btn.classList.add("is-copied");
+        if (defaultLabel) defaultLabel.textContent = "Copied!";
+        else btn.textContent = "Copied!";
+        window.setTimeout(function () {
+          btn.classList.remove("is-copied");
+          if (defaultLabel) defaultLabel.textContent = originalText;
+          else btn.textContent = originalText;
+        }, 1800);
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(value).then(showCopied).catch(function () {
+          fallbackCopy(value, showCopied);
+        });
+      } else {
+        fallbackCopy(value, showCopied);
+      }
+    });
+  });
+
+  function fallbackCopy(value, onDone) {
+    var temp = document.createElement("textarea");
+    temp.value = value;
+    temp.style.position = "fixed";
+    temp.style.opacity = "0";
+    document.body.appendChild(temp);
+    temp.select();
+    try { document.execCommand("copy"); } catch (e) {}
+    document.body.removeChild(temp);
+    onDone();
+  }
+});
+
+// ==================================================
+// HOMEPAGE HERO DIVIDER WIDTH
+// Sizes the divider line to visually align with "You Can"
+// in the hero heading, so the accent underlines the phrase
+// that matters most, and stays aligned across screen sizes.
+// ==================================================
+document.addEventListener("DOMContentLoaded", function () {
+  var target = document.getElementById("hero-divider-target");
+  var line = document.querySelector(".hero-divider .hero-divider-line");
+  if (!target || !line) return;
+
+  function syncWidth() {
+    var width = target.getBoundingClientRect().width;
+    if (width > 0) line.style.width = width + "px";
+  }
+
+  syncWidth();
+  window.addEventListener("resize", syncWidth);
+
+  // Fonts loading async can change measured text width after first paint.
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(syncWidth);
+  }
 });

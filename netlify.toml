@@ -1,0 +1,14 @@
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "http://mineandyourscleaning.ca/*"
+  to   = "https://mineandyourscleaning.ca/:splat"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "https://www.mineandyourscleaning.ca/*"
+  to   = "https://mineandyourscleaning.ca/:splat"
+  status = 301
+  force  = true

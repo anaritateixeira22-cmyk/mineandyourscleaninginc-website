@@ -209,8 +209,8 @@ a { color: inherit; text-decoration: none; }
 
 .main-nav {
   background: #ffffff;
-  border-bottom: none;
-  box-shadow: none;
+  border-bottom: 1px solid rgba(0,41,66,0.09);
+  box-shadow: 0 4px 14px rgba(0,41,66,0.09);
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -247,7 +247,31 @@ a { color: inherit; text-decoration: none; }
   cursor: pointer;
 }
 
+.nav-drag-handle {
+  display: none;
+}
+
 .nav-toggle svg { display: block; }
+
+/* Hamburger morphs into an X while the mobile menu is open, the
+   standard visual cue that tapping it again will close the menu. */
+.nav-toggle-line {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.25s ease, opacity 0.2s ease;
+}
+.main-nav.is-open .nav-toggle-line-top {
+  transform: translateY(6px) rotate(45deg);
+}
+.main-nav.is-open .nav-toggle-line-mid {
+  opacity: 0;
+}
+.main-nav.is-open .nav-toggle-line-bottom {
+  transform: translateY(-6px) rotate(-45deg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-toggle-line { transition: none; }
+}
 
 .nav-links {
   display: flex;
@@ -345,6 +369,15 @@ a { color: inherit; text-decoration: none; }
 }
 
 .nav-dropdown a:hover { background: #dfe9ea; color: var(--teal-dark); }
+
+/* Anchor links (sections within the same page as the parent, e.g.
+   About Us > Who We Are) get a slight forward nudge compared to
+   links that go to a genuinely different page (e.g. About Us >
+   Careers), a gentle visual cue distinguishing "same page, different
+   part" from "different page entirely". */
+.nav-dropdown a.nav-dropdown-anchor {
+  padding-left: 34px;
+}
 
 /* CTA row inside a dropdown — visually separated from the plain section links */
 .nav-dropdown-cta {
@@ -655,11 +688,32 @@ a { color: inherit; text-decoration: none; }
   margin: 10px 0 0;
 }
 
-.stars-divider {
-  width: min(320px, 65%);
-  height: auto;
+.hero-divider {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 16px 0 20px;
+}
+
+.hero-divider-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--teal-dark);
+  flex-shrink: 0;
+}
+
+.hero-divider-line {
   display: block;
-  margin: 10px 0 12px;
+  width: 56px;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--teal-dark), var(--teal));
+  transition: width 0.3s ease;
+}
+
+#hero-divider-target {
+  white-space: nowrap;
 }
 
 .hero-actions {
@@ -992,6 +1046,41 @@ a { color: inherit; text-decoration: none; }
   padding: 0.55rem 1rem;
   font-size: 0.82rem;
   display: inline-block;
+}
+
+.contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-top: auto;
+}
+.contact-actions .btn-compact { margin-top: 0; }
+
+.btn-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.82rem;
+  font-family: "Montserrat", Arial, sans-serif;
+  font-weight: 700;
+  color: var(--teal-dark);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.btn-copy:hover {
+  background: var(--soft);
+  border-color: var(--teal-dark);
+}
+.btn-copy svg { flex-shrink: 0; }
+.btn-copy.is-copied {
+  color: var(--white);
+  background: var(--teal-dark);
+  border-color: var(--teal-dark);
 }
 
 /* ==================================================
@@ -1620,10 +1709,11 @@ blockquote span { display: block; margin-top: 16px; color: var(--teal); font-siz
 }
 
 .minimize-btn {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 6px;
-  margin: 24px 0 8px;
+  margin: 24px 0 8px auto;
+  width: fit-content;
   padding: 0;
   background: none;
   border: none;
@@ -1635,8 +1725,13 @@ blockquote span { display: block; margin-top: 16px; color: var(--teal); font-siz
   cursor: pointer;
 }
 
+.minimize-btn.minimize-btn-top {
+  margin: 0 0 18px auto;
+}
+
 .minimize-btn:hover { color: var(--teal-dark); }
 .minimize-btn .caret { font-size: 0.8em; line-height: 1; }
+.minimize-btn .caret.caret-up { display: inline-block; }
 
 /* ==================================================
    FORMS
@@ -2056,8 +2151,8 @@ input[readonly] { background: #eef3f6; color: var(--muted); cursor: not-allowed;
   }
   
   .nav-brand-name .brand-main lower {
-    font-size: 0.55rem;
-    font-weight: 600;
+    font-size: 0.65rem;
+    font-weight: 800;
     vertical-align: baseline;
   }
   
@@ -2227,11 +2322,26 @@ input[readonly] { background: #eef3f6; color: var(--muted); cursor: not-allowed;
 
   .main-nav.is-open .nav-links {
     max-height: 2000px;
-    margin-top: 8px;
+    margin-top: 2px;
     padding-bottom: 10px;
   }
 
+  .main-nav.is-open {
+    border-radius: 0 0 16px 16px;
+  }
+
   .main-nav.is-open .nav-cta { display: flex; justify-content: center; }
+
+  .main-nav.is-open .nav-drag-handle {
+    order: 6;
+    grid-column: 1 / -1;
+    display: block;
+    width: 36px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border);
+    margin: 2px auto 10px;
+  }
 
   .hero-new { padding: 32px 0; }
   .hero-new-grid { grid-template-columns: 1fr; }
@@ -2283,7 +2393,6 @@ input[readonly] { background: #eef3f6; color: var(--muted); cursor: not-allowed;
 @media (max-width: 600px) {
   .hero-new h1 { font-size: clamp(1.8rem, 9vw, 2.4rem); }
   .hero-actions { flex-direction: column; align-items: stretch; }
-  .stars-divider { width: 100%; }
   .card-grid.four { grid-template-columns: 1fr; }
   .service-list { grid-template-columns: 1fr; }
   .card-grid.three, .card-grid.two { grid-template-columns: 1fr; }

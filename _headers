@@ -21,7 +21,3 @@
 
 /*.html
   Cache-Control: public, max-age=3600, must-revalidate
-
-/robots.txt
-  Content-Type: text/plain; charset=utf-8
-  Cache-Control: public, max-age=86400
