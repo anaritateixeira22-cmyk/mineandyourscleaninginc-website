@@ -46,12 +46,14 @@ document.addEventListener("DOMContentLoaded", function () {
   // ==================================================
   var touchStartY = null;
   var touchStartX = null;
+  var touchStartScrollY = null;
   var justSwiped = false;
 
   nav.addEventListener("touchstart", function (event) {
     if (!nav.classList.contains("is-open")) return;
     touchStartY = event.touches[0].clientY;
     touchStartX = event.touches[0].clientX;
+    touchStartScrollY = window.scrollY;
   }, { passive: true });
 
   nav.addEventListener("touchend", function (event) {
@@ -60,10 +62,15 @@ document.addEventListener("DOMContentLoaded", function () {
     var touchEndX = event.changedTouches[0].clientX;
     var swipedUp = touchStartY - touchEndY;
     var horizontalDrift = Math.abs(touchEndX - touchStartX);
+    // If the page actually scrolled during this gesture, the person was
+    // scrolling to see more of the menu, not swiping to dismiss it, even
+    // though both start with the same "finger moves up" motion. Only
+    // treat it as a close-swipe when the page didn't move.
+    var pageScrolled = Math.abs(window.scrollY - touchStartScrollY) > 5;
     // A real swipe moves well past what a steady tap would; browsers
     // already suppress the click event once a touch has moved this
     // much, so this can't accidentally also trigger a link underneath.
-    if (swipedUp > 70 && horizontalDrift < 60) {
+    if (swipedUp > 70 && horizontalDrift < 60 && !pageScrolled) {
       closeNav();
       // On some devices a swipe that ends directly over a link or the
       // CTA button can still produce a trailing click (browsers aren't
@@ -74,6 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     touchStartY = null;
     touchStartX = null;
+    touchStartScrollY = null;
   }, { passive: true });
 
   // Runs in the capture phase so it sees the click before any link's

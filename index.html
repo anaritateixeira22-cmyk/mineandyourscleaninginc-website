@@ -36,9 +36,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Allura&family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/style.min.css?v=20260731a" />
+  <link rel="stylesheet" href="css/style.min.css?v=20260801a" />
   <!-- Leaflet map -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="preconnect" href="https://unpkg.com">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
@@ -687,10 +687,9 @@ reference letters...</p>
     </div>
   </footer>
   
-  <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-  if (typeof L !== "undefined" && document.getElementById("index-map")) {
+  function initIndexMap() {
+    if (!document.getElementById("index-map")) return;
     var indexMap = L.map('index-map', { zoomControl: false, dragging: false, scrollWheelZoom: false }).setView([42.9800, -82.1500], 9);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -750,7 +749,11 @@ reference letters...</p>
       if (indexMarkerEl) indexMarkerEl.setAttribute('aria-label', c.name);
     });
   }
+  document.addEventListener("DOMContentLoaded", function () {
+    window.lazyLoadMap("index-map", initIndexMap);
+  });
   </script>
+  <script defer src="js/map-lazy-loader.js?v=20260801a"></script>
   <script defer src="js/search-init.js?v=20260726a"></script>
   <script defer src="js/search-landing.js?v=20260718a"></script>
   <script defer src="js/main.js?v=20260714a"></script>
