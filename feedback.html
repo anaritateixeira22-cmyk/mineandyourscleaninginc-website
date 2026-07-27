@@ -32,7 +32,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Allura&family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/style.min.css?v=20260820a" />
+  <link rel="stylesheet" href="css/style.min.css?v=20260822b" />
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
@@ -231,14 +231,14 @@
           <h3>Private Feedback</h3>
           <p>
             Feedback submitted through this page is reviewed privately by Mine And Yours Cleaning Inc.
-            If feedback is ever used publicly, we will use a summary or request permission before sharing identifying details.
+            If it's ever shared publicly as a testimonial, we'll follow the preference you've indicated on this form.
           </p>
         </div>
 
         <div class="notice-block">
           <h3>Need Help With an Active Service Concern?</h3>
           <p>
-            This page is intended for general feedback and improvement. If you have an active service concern that needs attention, please contact us directly by phone, text message, or email so the matter can be addressed appropriately.
+            This page is a place to share compliments, suggestions, or anything else that helps us improve. If you have an active service concern that requires immediate attention, please contact us directly by phone, text message, or email so the matter can be addressed appropriately and promptly.
           </p>
         </div>
       </div>
@@ -277,6 +277,18 @@
       </div>
 
       <div class="form-field">
+        <label for="title">Title / Role <span class="optional">(optional)</span></label>
+        <input type="text" id="title" name="Title / Role" placeholder="e.g., Property Manager, Facility Director">
+      </div>
+    </div>
+
+    <label class="checkbox-line full-width">
+      <input type="checkbox" id="anonymize-checkbox" name="Keep Name Private for Testimonials" value="Yes">
+      If used as a testimonial, keep my name private and show my title/role instead. Your name above is just for our records.
+    </label>
+
+    <div class="form-row">
+      <div class="form-field full-width">
         <label for="feedback-type">Feedback Type</label>
         <select id="feedback-type" name="Feedback Type">
           <option value="">Select one</option>

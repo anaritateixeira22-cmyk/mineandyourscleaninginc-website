@@ -1115,7 +1115,7 @@ p a:hover, li a:hover {
 }
 
 .contact-method-card p.contact-method-value {
-  font-size: 1.15rem;
+  font-size: clamp(0.8rem, 4.2vw, 1.15rem);
   font-weight: 700;
   color: var(--navy);
 }
@@ -1154,12 +1154,6 @@ p a:hover, li a:hover {
     padding-bottom: 0;
     margin-bottom: 0;
     border-bottom: none;
-  }
-}
-
-@media (max-width: 420px) {
-  .contact-method-card p.contact-method-value {
-    font-size: 1rem;
   }
 }
 
@@ -1597,6 +1591,15 @@ blockquote { margin: 0; color: var(--text); font-weight: 600; }
   font-size: 1.02rem;
   color: var(--navy);
   margin: 0 0 12px;
+}
+
+.testimonial-cta-card {
+  background: var(--soft);
+  border-style: dashed;
+}
+.testimonial-cta-card .btn-compact {
+  margin-top: auto;
+  align-self: flex-start;
 }
 
 .testimonial-card p {
