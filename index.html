@@ -36,7 +36,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Allura&family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/style.min.css?v=20260801a" />
+  <link rel="stylesheet" href="css/style.min.css?v=20260820a" />
   <!-- Leaflet map -->
   <link rel="preconnect" href="https://unpkg.com">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -319,7 +319,6 @@
       <div class="hero-slide-track">
         <img src="images/photos/about-reception-h2.webp" srcset="images/photos/about-reception-h2-700.webp 700w, images/photos/about-reception-h2.webp 1300w" sizes="(min-width: 900px) 560px, 100vw" alt="Modern office lobby maintained by Mine And Yours Cleaning" class="hero-slide is-active" loading="eager" width="1300" height="731">
         <img src="images/photos/spray-bottle.webp" srcset="images/photos/spray-bottle-700.webp 700w, images/photos/spray-bottle.webp 1300w" sizes="(min-width: 900px) 560px, 100vw" alt="Professional cleaning products prepared for service" class="hero-slide" loading="lazy" width="1300" height="731">
-        <img src="images/photos/home-finished-d3.webp" srcset="images/photos/home-finished-d3-700.webp 700w, images/photos/home-finished-d3.webp 1300w" sizes="(min-width: 900px) 560px, 100vw" alt="Finished clean room with neat and polished surfaces" class="hero-slide" loading="lazy" width="1300" height="731">
         <img src="images/photos/lady-with-supplies.webp" srcset="images/photos/lady-with-supplies-700.webp 700w, images/photos/lady-with-supplies.webp 1300w" sizes="(min-width: 900px) 560px, 100vw" alt="Cleaning team member carrying professional supplies" class="hero-slide" loading="lazy" width="1300" height="731">
       </div>
     </div>
@@ -523,13 +522,14 @@ Detailed who / what / where belongs on services.html.
           <p class="eyebrow">Service Area</p>
           <h2>Serving businesses and organizations throughout Sarnia, Lambton County, and Southwestern Ontario.</h2>
           <p>
-            Serving Sarnia, Point Edward, Bright's Grove, Camlachie, Corunna, St. Clair Township, Petrolia, Forest, Lambton Shores, Grand Bend, Oil Springs, and surrounding communities.
+            Serving Sarnia, Point Edward, Bright's Grove, Camlachie, Corunna, St. Clair Township, Petrolia, Forest, Oakdale, Kettle Point, Oil Springs, and surrounding communities.
           </p>
           <p class="small-note">Don’t see your community listed? Contact us to discuss service availability.</p>
+          <p class="small-note"><a href="https://g.page/r/CZ987y2oKCUAEBM" target="_blank" rel="noopener">Find us on Google Maps</a>.</p>
         </div>
 
         <!-- MAP: Leaflet + OpenStreetMap, no API key required -->
-        <div id="index-map" style="height: 330px; border-radius: 20px; border: 2px solid var(--teal); overflow: hidden;"></div>
+        <div id="index-map" style="height: 260px; border-radius: 20px; border: 2px solid var(--teal); overflow: hidden;"></div>
       </div>
     </section>
 
@@ -696,20 +696,8 @@ reference letters...</p>
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(indexMap);
 
-    var indexZone = L.polygon([
-      [43.00, -82.44],
-      [43.07, -82.40],
-      [43.13, -82.32],
-      [43.18, -82.18],
-      [43.20, -82.00],
-      [43.10, -81.88],
-      [42.98, -81.84],
-      [42.84, -81.92],
-      [42.72, -82.06],
-      [42.76, -82.28],
-      [42.86, -82.44],
-      [42.95, -82.42]
-    ], {
+    var indexZone = L.circle([42.9700, -82.1300], {
+      radius: 30000,
       color: 'transparent',
       fillColor: '#0e8ca8',
       fillOpacity: 0.13,
@@ -736,9 +724,10 @@ reference letters...</p>
       { name: 'Petrolia',        lat: 42.8800, lng: -82.1500 },
       { name: 'Wyoming',         lat: 42.9500, lng: -82.1167 },
       { name: 'Forest',          lat: 43.1000, lng: -82.0000 },
+      { name: 'Oakdale',         lat: 42.9920, lng: -82.3850 },
       { name: 'Watford',         lat: 42.9500, lng: -81.9833 },
       { name: 'Oil Springs',     lat: 42.7833, lng: -82.1167 },
-      { name: 'Lambton Shores',  lat: 43.1833, lng: -81.9000 },
+      { name: 'Kettle Point',    lat: 43.2000, lng: -82.0000 },
     ];
 
     indexCommunities.forEach(function(c) {

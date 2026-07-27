@@ -32,7 +32,7 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Allura&family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/style.min.css?v=20260801a">
+  <link rel="stylesheet" href="css/style.min.css?v=20260820a">
   <!-- Leaflet map -->
   <link rel="preconnect" href="https://unpkg.com">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -282,9 +282,10 @@
           <div class="grouped-item"><h3>Petrolia</h3></div>
           <div class="grouped-item"><h3>Wyoming</h3></div>
           <div class="grouped-item"><h3>Forest</h3></div>
-          <div class="grouped-item"><h3>Lambton Shores</h3></div>
+          <div class="grouped-item"><h3>Oakdale</h3></div>
           <div class="grouped-item"><h3>Watford</h3></div>
           <div class="grouped-item"><h3>Oil Springs</h3></div>
+          <div class="grouped-item"><h3>Kettle Point</h3></div>
           <div class="grouped-item"><h3>Other Areas</h3></div>
         </div>
        
@@ -441,26 +442,14 @@
   <script>
   function initServiceAreaMap() {
     if (!document.getElementById("service-map")) return;
-    var map = L.map('service-map').setView([42.9800, -82.1500], 9);
+    var map = L.map('service-map').setView([42.9700, -82.1300], 10);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    var serviceZone = L.polygon([
-      [43.00, -82.44],
-      [43.07, -82.40],
-      [43.13, -82.32],
-      [43.18, -82.18],
-      [43.20, -82.00],
-      [43.10, -81.88],
-      [42.98, -81.84],
-      [42.84, -81.92],
-      [42.72, -82.06],
-      [42.76, -82.28],
-      [42.86, -82.44],
-      [42.95, -82.42]
-    ], {
+    var serviceZone = L.circle([42.9700, -82.1300], {
+      radius: 30000,
       color: 'transparent',
       fillColor: '#0e8ca8',
       fillOpacity: 0.13,
@@ -487,9 +476,10 @@
       { name: 'Petrolia',        lat: 42.8800, lng: -82.1500 },
       { name: 'Wyoming',         lat: 42.9500, lng: -82.1167 },
       { name: 'Forest',          lat: 43.1000, lng: -82.0000 },
+      { name: 'Oakdale',         lat: 42.9920, lng: -82.3850 },
       { name: 'Watford',         lat: 42.9500, lng: -81.9833 },
       { name: 'Oil Springs',     lat: 42.7833, lng: -82.1167 },
-      { name: 'Lambton Shores',  lat: 43.1833, lng: -81.9000 },
+      { name: 'Kettle Point',    lat: 43.2000, lng: -82.0000 },
     ];
 
     communities.forEach(function(c) {
